@@ -22,7 +22,8 @@ jobs:
       - name: Cargo test
         run: cargo test --locked --verbose
 
-      - name: Smoke: gen/verify small
+      - name: "Smoke: gen/verify small"
+        shell: bash
         run: |
           ./target/debug/collatz_cert gen --k 4 --l 8 --threads 2
           ./target/debug/collatz_cert verify --k 4 --l 8 \
