@@ -1,0 +1,17 @@
+{
+  "k": 28,
+  "l": 256,
+  "count": 134217728,
+  "min_s": 432,
+  "eps": 0.10253749927884392,
+  "threshold": 406,
+  "pass": true,
+  "sha256_table_hex": "a0369f31703635eaefbaf2a2d34bdd6d1a2cd5464dadb1f8a7cdf44c2833e917",
+  "sha256_exec_hex": "e33230b3ac57a929ff61b693df1123948c0a7dbd8377d2c898e144934306dffa",
+  "generator_cmdline": "target/release/collatz_cert gen --k 28 --l 256 --out-table table_k28_l256.bin --out-manifest cert_k28_l256.json",
+  "pkg_version": "0.1.0",
+  "build_git_rev": "36c9949",
+  "build_rustc": "rustc 1.88.0 (6b00bc388 2025-06-23)",
+  "os_arch": "macos-aarch64",
+  "gen_ts": "2025-10-03T21:00:49.677317+00:00"
+}

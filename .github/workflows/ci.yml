@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Cargo build
+        run: cargo build --locked --verbose
+
+      - name: Cargo test
+        run: cargo test --locked --verbose
+
+      - name: Smoke: gen/verify small
+        run: |
+          ./target/debug/collatz_cert gen --k 4 --l 8 --threads 2
+          ./target/debug/collatz_cert verify --k 4 --l 8 \
+            --table table_k4_l8_v2.bin \
+            --manifest cert_k4_l8_v2.json \
+            --threads 2
+

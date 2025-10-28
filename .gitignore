@@ -1,0 +1,20 @@
+# Build artifacts
+/target/
+/dist/
+
+# Generated certificates and archives
+*.tar.gz
+CHECKSUMS.sha256
+
+# Generated tables (v1/v2)
+table_*.bin
+*_v2.bin
+
+# Logs and temp
+*.log
+*.tmp
+
+# IDE/editor
+.DS_Store
+.vscode/
+.idea/
