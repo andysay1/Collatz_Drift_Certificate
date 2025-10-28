@@ -103,6 +103,10 @@ cargo bench --bench compute
 scripts/publish_cert.sh -k 24 -l 256 -t 24 -o dist
 ```
 
+## Лицензия
+
+MIT — см. файл `LICENSE`.
+
 ## Тестирование
 
 ```bash

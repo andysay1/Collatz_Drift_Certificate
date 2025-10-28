@@ -1,0 +1,59 @@
+name: Release
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+jobs:
+  build-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Build
+        run: cargo build --release --locked
+      - name: Rename binary
+        run: |
+          ls -l target/release
+          mv target/release/collatz_cert target/release/collatz_cert-linux-amd64
+      - name: Small sample artifacts (k4,l8)
+        run: |
+          chmod +x scripts/publish_cert.sh
+          ./scripts/publish_cert.sh -k 4 -l 8 -t 2 -o dist
+      - name: Upload binaries to Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            target/release/collatz_cert-linux-amd64
+            dist/**
+
+  build-macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Build
+        run: cargo build --release --locked
+      - name: Rename binary
+        run: mv target/release/collatz_cert target/release/collatz_cert-macos-amd64
+      - name: Upload binaries to Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: target/release/collatz_cert-macos-amd64
+
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Build
+        run: cargo build --release --locked
+      - name: Rename binary
+        shell: pwsh
+        run: Rename-Item target/release/collatz_cert.exe collatz_cert-windows-amd64.exe; Move-Item collatz_cert-windows-amd64.exe target/release/
+      - name: Upload binaries to Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: target/release/collatz_cert-windows-amd64.exe
+
