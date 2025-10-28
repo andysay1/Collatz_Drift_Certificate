@@ -18,35 +18,33 @@
 
 ## Структура сертификата
 
--   v2 (по умолчанию): `table_k24_l256_v2.bin` — бинарный файл с таблицей всех `S_r` (u32, ver=2).
--   v1 (совместимость чтения): `table_k24_l256.bin` — старая версия (u16, ver=1).
--   `cert_k24_l256_v2.json` — манифест (K,L, min_S, eps, sha256, метаданные сборки, file_ver).
+-   v2 (по умолчанию): `table_k{K}_l{L}_v2.bin` — бинарный файл с таблицей всех `S_r` (u32, ver=2).
+-   v1 (совместимость чтения): `table_k{K}_l{L}.bin` — старая версия (u16, ver=1).
+-   `cert_k{K}_l{L}_v2.json` — манифест (K,L, min_S, eps, sha256, метаданные сборки, file_ver).
 -   `CHECKSUMS.sha256` — контрольные суммы.
--   Архив: `cert_k24_l256.tar.gz`.
-
-SHA-256 архива: cert_k24_l256.tar.gz
-
-9ea7c4fae48d04b40c394b2924a7aea5c2cd5a870e323c4859f3988591a16444
+-   Архив: `cert_k{K}_l{L}_v2.tar.gz`.
 
 ## Установка
 
 ```bash
-git clone
-cd collatz_cert
-
+git clone https://github.com/andysay1/Collatz_Drift_Certificate.git
+cd Collatz_Drift_Certificate
 cargo build --release
-
+```
 
 Генерация сертификата (v2 по умолчанию)
 
+```bash
 target/release/collatz_cert gen \
   --k 24 --l 256 --threads 24
 
 # Выходные файлы по умолчанию:
 #  table_k24_l256_v2.bin, cert_k24_l256_v2.json
+```
 
 Верификация сертификата
 
+```bash
 target/release/collatz_cert verify \
   --k 24 --l 256 \
   --table table_k24_l256_v2.bin \
@@ -55,6 +53,7 @@ target/release/collatz_cert verify \
 
 # Также поддерживается проверка старого формата v1
 #  --table table_k24_l256.bin --manifest cert_k24_l256.json
+```
 
 ## Вау‑фактор: статистика, упаковка, бенчмарки
 
@@ -89,6 +88,7 @@ target/release/collatz_cert verify \
 cargo bench --bench compute
 
 # Откроет HTML‑отчёт Criterion в target/criterion/report
+```
 
 ## CI и релизы
 
@@ -101,7 +101,6 @@ cargo bench --bench compute
 ```bash
 # Пример публикации артефактов (архив, checksums, summary, histogram CSV) в dist/
 scripts/publish_cert.sh -k 24 -l 256 -t 24 -o dist
-```
 ```
 
 ## Тестирование
@@ -117,7 +116,7 @@ cargo test
 
 Проверка контрольных сумм
 
-  shasum -a256 -c CHECKSUMS.sha256
-
-
+```bash
+# Из каталога с архивом и CHECKSUMS.sha256 (например, dist/):
+shasum -a256 -c CHECKSUMS.sha256
 ```
