@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [ main, master ]
+    branches: [ main ]
   pull_request:
-    branches: [ main, master ]
+    branches: [ main ]
 
 jobs:
   build-test:
@@ -29,4 +29,3 @@ jobs:
             --table table_k4_l8_v2.bin \
             --manifest cert_k4_l8_v2.json \
             --threads 2
-

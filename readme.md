@@ -1,7 +1,7 @@
 # Collatz Drift Certificate
 
-[![CI](https://img.shields.io/github/actions/workflow/status/OWNER/REPO/ci.yml?branch=main)](https://github.com/OWNER/REPO/actions/workflows/ci.yml)
-[![Bench](https://img.shields.io/github/actions/workflow/status/OWNER/REPO/bench.yml?label=bench&branch=main)](https://github.com/OWNER/REPO/actions/workflows/bench.yml)
+[![CI](https://img.shields.io/github/actions/workflow/status/andysay1/Collatz_Drift_Certificate/ci.yml?branch=main)](https://github.com/andysay1/Collatz_Drift_Certificate/actions/workflows/ci.yml)
+[![Bench](https://img.shields.io/github/actions/workflow/status/andysay1/Collatz_Drift_Certificate/bench.yml?label=bench&branch=main)](https://github.com/andysay1/Collatz_Drift_Certificate/actions/workflows/bench.yml)
 
 ## Описание
 
@@ -95,7 +95,7 @@ cargo bench --bench compute
 - GitHub Actions
   - CI: `.github/workflows/ci.yml` — сборка, тесты и смоук `gen/verify`.
   - Bench: `.github/workflows/bench.yml` — ручной запуск бенчмарков с выгрузкой отчётов.
-- Бейджи: замените `OWNER/REPO` в ссылках бэйджей на ваш `org/repo`.
+- Бейджи: настроены на `andysay1/Collatz_Drift_Certificate` и ветку `main`.
 - Паблиш скрипт: `scripts/publish_cert.sh`
 
 ```bash
