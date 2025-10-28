@@ -107,6 +107,24 @@ scripts/publish_cert.sh -k 24 -l 256 -t 24 -o dist
 
 MIT — см. файл `LICENSE`.
 
+## Артефакты релиза
+
+В релизах GitHub доступны:
+- Бинарники: `collatz_cert-<tag>-<os>-amd64` (Linux/macOS/Windows).
+- Архивы с README и LICENSE:
+  - Linux/macOS: `collatz_cert-<tag>-<os>-amd64.tar.gz` и `.sha256`.
+  - Windows: `collatz_cert-<tag>-windows-amd64.zip` и `.sha256`.
+
+Проверка архива:
+
+```bash
+# Для .tar.gz (Linux/macOS)
+shasum -a256 -c collatz_cert-<tag>-<os>-amd64.tar.gz.sha256
+
+# Для .zip (Windows, из PowerShell)
+Get-FileHash collatz_cert-<tag>-windows-amd64.zip -Algorithm SHA256
+```
+
 ## Тестирование
 
 ```bash

@@ -17,6 +17,15 @@ jobs:
         run: |
           ls -l target/release
           mv target/release/collatz_cert target/release/collatz_cert-linux-amd64
+      - name: Package archive + checksums (tar.gz)
+        run: |
+          set -euo pipefail
+          TAG="${GITHUB_REF_NAME:-unknown}"; BASE="collatz_cert-${TAG}-linux-amd64"
+          mkdir -p "$BASE"
+          cp -v target/release/collatz_cert-linux-amd64 "$BASE/"
+          cp -v README.md LICENSE "$BASE/" || true
+          tar -czf "$BASE.tar.gz" "$BASE"
+          shasum -a256 "$BASE.tar.gz" | sed 's# ./#  #' > "$BASE.tar.gz.sha256"
       - name: Small sample artifacts (k4,l8)
         run: |
           chmod +x scripts/publish_cert.sh
@@ -26,6 +35,8 @@ jobs:
         with:
           files: |
             target/release/collatz_cert-linux-amd64
+            collatz_cert-*-linux-amd64.tar.gz
+            collatz_cert-*-linux-amd64.tar.gz.sha256
             dist/**
 
   build-macos:
@@ -37,10 +48,22 @@ jobs:
         run: cargo build --release --locked
       - name: Rename binary
         run: mv target/release/collatz_cert target/release/collatz_cert-macos-amd64
+      - name: Package archive + checksums (tar.gz)
+        run: |
+          set -euo pipefail
+          TAG="${GITHUB_REF_NAME:-unknown}"; BASE="collatz_cert-${TAG}-macos-amd64"
+          mkdir -p "$BASE"
+          cp -v target/release/collatz_cert-macos-amd64 "$BASE/"
+          cp -v README.md LICENSE "$BASE/" || true
+          tar -czf "$BASE.tar.gz" "$BASE"
+          shasum -a256 "$BASE.tar.gz" | sed 's# ./#  #' > "$BASE.tar.gz.sha256"
       - name: Upload binaries to Release
         uses: softprops/action-gh-release@v2
         with:
-          files: target/release/collatz_cert-macos-amd64
+          files: |
+            target/release/collatz_cert-macos-amd64
+            collatz_cert-*-macos-amd64.tar.gz
+            collatz_cert-*-macos-amd64.tar.gz.sha256
 
   build-windows:
     runs-on: windows-latest
@@ -52,8 +75,22 @@ jobs:
       - name: Rename binary
         shell: pwsh
         run: Rename-Item target/release/collatz_cert.exe collatz_cert-windows-amd64.exe; Move-Item collatz_cert-windows-amd64.exe target/release/
+      - name: Package archive + checksums (zip)
+        shell: pwsh
+        run: |
+          $tag = "$env:GITHUB_REF_NAME"; if ([string]::IsNullOrEmpty($tag)) { $tag = "unknown" }
+          $base = "collatz_cert-$tag-windows-amd64"
+          New-Item -ItemType Directory -Force $base | Out-Null
+          Copy-Item target/release/collatz_cert-windows-amd64.exe "$base/"
+          if (Test-Path README.md) { Copy-Item README.md "$base/" }
+          if (Test-Path LICENSE) { Copy-Item LICENSE "$base/" }
+          Compress-Archive -Path "$base/*" -DestinationPath "$base.zip"
+          $h = (Get-FileHash "$base.zip" -Algorithm SHA256).Hash.ToLower()
+          "$h  $base.zip" | Out-File "$base.zip.sha256" -Encoding ASCII
       - name: Upload binaries to Release
         uses: softprops/action-gh-release@v2
         with:
-          files: target/release/collatz_cert-windows-amd64.exe
-
+          files: |
+            target/release/collatz_cert-windows-amd64.exe
+            collatz_cert-*-windows-amd64.zip
+            collatz_cert-*-windows-amd64.zip.sha256
